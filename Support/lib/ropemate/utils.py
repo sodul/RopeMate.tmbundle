@@ -86,8 +86,13 @@ def get_input(title="Input",default=""):
 def caret_position(code):
     lines = code.split("\n")
     line_lengths = [len(l)+1 for l in lines]
-    line_number = int(os.environ['TM_LINE_NUMBER'])
-    line_index = int(os.environ['TM_LINE_INDEX'])
+    try:
+        line_number, line_index = os.environ['TM_SELECTION'].split('-')[0].split(':')
+        line_number = int(line_number)
+        line_index = int(line_index)
+    except KeyError:
+        line_number = int(os.environ['TM_LINE_NUMBER'])
+        line_index = int(os.environ['TM_LINE_INDEX'])
     offset = sum(line_lengths[0:line_number-1]) + line_index
     return offset
 
